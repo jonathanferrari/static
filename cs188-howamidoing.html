@@ -90,14 +90,15 @@
             var discussionSectionCount = parseInt(document.getElementById("discussionSectionCount").value);
             var finalWeight = 0.35;
             var discussionSectionExtraCredit = discussionSectionCount * 0.001;
-            var extraCredit = document.getElementById("extraCredit").checked ? (1 / 125) : 0;
+            var projExtraCredit = document.getElementById("projExtraCredit").checked ? (1 / 125) : 0;
+            var mtExtraCredit = document.getElementById("mtExtraCredit").checked ? (.01) : 0;
             // Calculate weighted scores
             var projectWeight = 0.25;
             var homeworkWeight = 0.20;
             var midtermWeight = 0.20;
-            var projectWeightedScore = (projectScore + extraCredit) * projectWeight;
+            var projectWeightedScore = (projectScore + projExtraCredit) * projectWeight;
             var homeworkWeightedScore = homeworkScore * homeworkWeight;
-            var midtermWeightedScore = midtermScore * midtermWeight;
+            var midtermWeightedScore = (midtermScore + mtExtraCredit) * midtermWeight;
             var weightedScore = projectWeightedScore + homeworkWeightedScore + midtermWeightedScore;
 
             // Add extra credit
@@ -134,21 +135,19 @@
 
             // Display required final score rounded to 2 decimal places
             document.getElementById("requiredFinalScore").innerHTML = (requiredFinalScore * 100).toFixed(2) + "%";
-	    window.scrollTo(0,document.body.scrollHeight);
+	          window.scrollTo(0,document.body.scrollHeight);
         }
     </script>
 </head>
 
 <body>
-    <h1>Final Grade Estimator</h1>
+    <h1>Final Grade Estimator</h1>z
     <h3>Please enter your grades as percents without the <code>%</code> sign.</h3>
     <form>
         <fieldset>
             <legend>Assignment Scores</legend>
             <label>Project Score:</label>
             <input type="number" id="projectScore" min="0" max="100" step="0.01" value="100">
-            <label>Project Extra Credit: One extra point on Project 1</label>
-            <input type="checkbox" id="extraCredit">
             <br>
             <label>Homework Score:</label>
             <input type="number" id="homeworkScore" min="0" max="100" step="0.01" value="100">
@@ -160,6 +159,10 @@
             <legend>Extra Credit</legend>
             <label>Number of Discussion Sections Attended:</label>
             <input type="number" id="discussionSectionCount" min="0" max="10" value="0">
+            <label>Project Extra Credit: One extra point on Project 1</label>
+            <input type="checkbox" id="projExtraCredit">
+            <label>Midterm Extra Credit: One extra point on Midterm 1</label>
+            <input type="checkbox" id="mtExtraCredit">
         </fieldset>
         <fieldset>
             <legend>Desired Grade</legend>
