@@ -77,8 +77,55 @@
             height: 20px;
             margin-right: 10px;
             border: 1px solid #ccc;
-            border-radius: 3px;
+            border-radius: 20px;
             background-color: #fff;
+        }
+        
+        .callout-container {
+            position: relative;
+            border: 2px solid #C2A875;
+            background-color: #FFEECA;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            padding-right: 0px;
+        }
+        
+        .close-button {
+            position: absolute;
+            top: -10px;
+            right: 5px;
+            font-size: 20px;
+            line-height: 1;
+            color: #fff;
+            background-color: #C2A875;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .close-button:hover {
+            color: #fff;
+            opacity: 0.8;
+            text-decoration: none;
+        }
+        
+        .callout-message {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #C2A875;
+            margin-bottom: 0;
+        }
+        
+        .callout-message strong {
+            font-weight: bold;
         }
     </style>
     <script>
@@ -135,14 +182,138 @@
 
             // Display required final score rounded to 2 decimal places
             document.getElementById("requiredFinalScore").innerHTML = (requiredFinalScore * 100).toFixed(2) + "%";
-	          window.scrollTo(0,document.body.scrollHeight);
+            window.scrollTo(0, document.body.scrollHeight);
         }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.close-button').click(function() {
+                $(this).parent().fadeOut();
+            });
+        });
     </script>
 </head>
 
 <body>
-    <h1>Final Grade Estimator</h1>z
+    <style>
+        /* Your existing styles here */
+        /* Dark mode styles */
+        
+        body.dark-mode {
+            background-color: #111;
+            color: #d4d2d2;
+        }
+        
+        body.dark-mode input {
+            background-color: #5a5959;
+            color: #ddd;
+            border: 1px solid #ddd;
+        }
+        
+        body.dark-mode select {
+            background-color: #5a5959;
+            color: #ddd;
+            border: 1px solid #ddd;
+        }
+        
+        body.dark-mode input[type="checkbox"] {
+            background-color: grey !important;
+        }
+    </style>
+    <style>
+        .dark-mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            z-index: 9999;
+        }
+        
+        .dark-mode-toggle label {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .dark-mode-toggle input {
+            display: none;
+        }
+        
+        .dark-mode-toggle .toggle-label {
+            margin-left: 10px;
+            color: #fff;
+        }
+        
+        .dark-mode-toggle label:before,
+        .dark-mode-toggle label:after {
+            position: absolute;
+            top: 1px;
+            left: 1px;
+            bottom: 1px;
+            content: "";
+        }
+        
+        .dark-mode-toggle label:before {
+            right: 1px;
+            background-color: #ccc;
+            border-radius: 34px;
+            transition: background-color 0.2s ease;
+        }
+        
+        .dark-mode-toggle label:after {
+            width: 30px;
+            background-color: #fff;
+            border-radius: 30px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s ease;
+        }
+        
+        .dark-mode-toggle input:checked+label:before {
+            background-color: #007bff;
+        }
+        
+        .dark-mode-toggle input:checked+label:after {
+            transform: translateX(26px);
+        }
+        
+        .dark-mode-toggle label:active:after {
+            width: 36px;
+        }
+    </style>
+    <br/>
+    <div class="dark-mode-toggle">
+        <input type="checkbox" id="dark-mode-switch">
+        <label for="dark-mode-switch"></label>
+    </div>
+    <script>
+        const darkModeSwitch = document.getElementById('dark-mode-switch');
+
+        function toggleDarkMode() {
+            const body = document.body;
+            body.classList.toggle('dark-mode');
+        }
+
+        darkModeSwitch.addEventListener('change', toggleDarkMode);
+    </script>
+    <br/>
+    <h1>Final Grade Estimator</h1>
     <h3>Please enter your grades as percents without the <code>%</code> sign.</h3>
+    <br/>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-sm-8">
+                <div class="callout-container">
+                    <button type="button" class="close-button">×</button>
+                    <p class="callout-message"><strong>Disclaimer:</strong> This calculator was neither created by nor endorsed by CS 188 staff. This was created solely by myself and is not intended to deliver a final grade, it is only for estimation purposes, and provides no guarantee
+                        about the final letter grade.</p>
+                </div>
+            </div>
+        </div>
+    </div>
     <form>
         <fieldset>
             <legend>Assignment Scores</legend>
