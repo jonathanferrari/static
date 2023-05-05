@@ -142,6 +142,7 @@
             var discussionSectionExtraCredit = discussionSectionCount * 0.001;
             var projExtraCredit = document.getElementById("projExtraCredit").checked ? (1 / 125) : 0;
             var mtExtraCredit = document.getElementById("mtExtraCredit").checked ? (.01) : 0;
+            var finalExtraCredit = document.getElementById("finalExtraCredit").checked ? (.01) : 0;
             // Calculate weighted scores
             var projectWeight = 0.25;
             var homeworkWeight = 0.20;
@@ -182,6 +183,7 @@
             } else {
                 requiredFinalScore = "N/A";
             }
+            requiredFinalScore = requiredFinalScore - finalExtraCredit
 
             // Display required final score rounded to 2 decimal places
             document.getElementById("requiredFinalScore").innerHTML = (requiredFinalScore * 100).toFixed(2) + "%";
@@ -335,8 +337,10 @@
             <input type="number" id="discussionSectionCount" min="0" max="10" value="0">
             <label>Project Extra Credit: One extra point on Project 1</label>
             <input type="checkbox" id="projExtraCredit">
-            <label>Midterm Extra Credit: One extra point on Midterm 1</label>
+            <label>Midterm Extra Credit: One extra point on Midterm</label>
             <input type="checkbox" id="mtExtraCredit">
+            <label>Midterm Extra Credit: One extra point on Final</label>
+            <input type="checkbox" id="finalExtraCredit">
         </fieldset>
         <fieldset>
             <legend>Desired Grade</legend>
