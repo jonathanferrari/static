@@ -60,6 +60,15 @@ titles = {
     "feedback" : "Feedback Survey",
     "welcome" : "Welcome Survey"
 }
+
+
+rename_map = {"stat_experience" : "Stats Experience", "cs_experience" : "CS Experience", 
+                      "stat_confidence" : "Stats Confidence", "cs_confidence" : "CS Confidence",
+                        "scaffolding_helpful" : "Scaffolding Helpful", "mode_preference" : "Multimodality Preference",
+                        "bank_learn" : "Banking Education Value", "bank_like" : "Banking Education Enjoyment",
+                        "pose_learn" : "Problem Posing Education Value", "pose_like" : "Problem Posing Education Enjoyment"
+                      }
+
 @st.cache_data
 def load_sheet():
     sheets = pd.read_excel("https://docs.google.com/spreadsheets/d/e/2PACX-1vTaoSrGe7BpMFvXFQnn02_HUt7t3pTWAAl1ny_A4zNkszerHWZHReQ0YkDK58qJ8_G83ih9IVqmm0IO/pub?output=xlsx", sheet_name = None)
@@ -72,6 +81,15 @@ def load_sheet():
     data = {"experience" : experience, "feedback" : feedback, "welcome" : welcome}
     return data
 data = load_sheet()
+
+@st.cache_data
+def load_summaries():
+    df = data["experience"]
+    df = df[["stat_experience", "stat_confidence", "cs_experience", "cs_confidence", "bank_learn", "bank_like", "pose_learn", "pose_like", "scaffolding_helpful", "mode_preference"]]
+    exp = df.groupby(["stat_experience", "cs_experience"]).mean(numeric_only = True).reset_index().rename(columns = rename_map).iloc[:, list(range(8))]
+    means = pd.DataFrame(df.mean(numeric_only = True), columns=["Mean"]).iloc[list(range(6)), :].rename(index = rename_map)
+    return exp, means
+exp, means = load_summaries()
 
 survey_type = st.selectbox(
     "Select Survey",
@@ -103,21 +121,6 @@ else:
                         text_auto=True)
     
 fig.update_traces(textposition='outside')
-
-
-rename_map = {"stat_experience" : "Stats Experience", "cs_experience" : "CS Experience", 
-                      "stat_confidence" : "Stats Confidence", "cs_confidence" : "CS Confidence",
-                        "scaffolding_helpful" : "Scaffolding Helpful", "mode_preference" : "Multimodality Preference",
-                        "bank_learn" : "Banking Education Value", "bank_like" : "Banking Education Enjoyment",
-                        "pose_learn" : "Problem Posing Education Value", "pose_like" : "Problem Posing Education Enjoyment"
-                      }
-df = data["experience"]
-df = df[["stat_experience", "stat_confidence", "cs_experience", "cs_confidence", "bank_learn", "bank_like", "pose_learn", "pose_like", "scaffolding_helpful", "mode_preference"]]
-stat = df.groupby("stat_experience").mean(numeric_only = True).reset_index()
-cs = df.groupby("cs_experience").mean(numeric_only = True).reset_index()
-exp = df.groupby(["stat_experience", "cs_experience"]).mean(numeric_only = True).reset_index().rename(columns = rename_map).iloc[:, list(range(8))]
-means = pd.DataFrame(df.mean(numeric_only = True), columns=["Mean"]).iloc[list(range(6)), :].rename(index = rename_map)
-
 
 st.markdown("## Histogram")
 st.plotly_chart(fig)
